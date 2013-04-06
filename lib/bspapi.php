@@ -145,6 +145,24 @@ class BspApi {
 		return $download_url;
 	}
 	
+	public function lightboxes() {
+		$auth_key		= sha1($this->secret_key . $this->account_id);
+		$params = array('auth_key'=>$auth_key);
+		$lightbox_url		= 'https://' . $this->base_url.'lightbox/?' . http_build_query($params);
+		return $this->sendRequest($lightbox_url);
+	}
+	
+	public function lightbox($lightbox_id, $key=null) {
+		if ( !is_null($key) ) {
+			$auth_key		= sha1($this->secret_key . $this->account_id . $lightbox_id . $key);
+		} else {
+			$auth_key		= sha1($this->secret_key . $this->account_id . $lightbox_id);
+		}
+		$params = array('auth_key'=>$auth_key);
+		$lightbox_url		= 'https://' . $this->base_url.'lightbox/'.$lightbox_id.'?' . http_build_query($params);
+		return $this->sendRequest($lightbox_url);
+	}
+
 	/**
 	 * Send the API request to the Bigstock server
 	 *
